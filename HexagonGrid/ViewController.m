@@ -50,11 +50,18 @@ static const NSInteger kNumberOfViews = 19;
 {
     [super viewDidAppear:animated];
     
+    // Initialize hexGrid
     self.hexGrid = [[HexagonGrid alloc] init];
-    self.hexGrid.viewsAreAppearingClockwise = NO;
+    // Set optional parameters
+    self.hexGrid.viewsAreAppearingClockwise = YES;
+    self.hexGrid.mainViewRadius = 80;
+    self.hexGrid.surroundingViewRadius = 40;
+    self.hexGrid.offsetBetweeenViews = 20;
+    // Set required parameters
     self.hexGrid.viewFrame = self.scrollView.frame;
     self.hexGrid.numberOfViews = kNumberOfViews;
     
+    // Produce UIViews
     for (int i = 0; i < kNumberOfViews; i++) {
         [self performSelector:@selector(drawViewAtIndex:) withObject:@(i) afterDelay:i];
     }
