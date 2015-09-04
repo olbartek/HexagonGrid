@@ -35,7 +35,7 @@ static const NSInteger kNumberOfViews = 19;
     _scrollView.minimumZoomScale = 1;
     _scrollView.maximumZoomScale = 3.0;
     _scrollView.delegate = self;
-    self.scrollView.contentSize = CGSizeMake(kScrollViewWidth, kScrollViewHeight);
+    _scrollView.contentSize = CGSizeMake(kScrollViewWidth, kScrollViewHeight);
 }
 
 #pragma mark - VC's Lifecycle
@@ -50,6 +50,13 @@ static const NSInteger kNumberOfViews = 19;
 {
     [super viewDidAppear:animated];
     
+    // Center scrollView content
+    CGFloat newContentOffsetX = (_scrollView.contentSize.width/2) - (_scrollView.bounds.size.width/2);
+    CGFloat newContentOffsetY = (_scrollView.contentSize.height/2) - (_scrollView.bounds.size.height/2);
+    if (newContentOffsetX < 0) {newContentOffsetX = 0;}
+    if (newContentOffsetY < 0) {newContentOffsetY = 0;}
+    _scrollView.contentOffset = CGPointMake(newContentOffsetX, newContentOffsetY);
+    
     // Initialize hexGrid
     self.hexGrid = [[HexagonGrid alloc] init];
     // Set optional parameters
@@ -58,7 +65,7 @@ static const NSInteger kNumberOfViews = 19;
     self.hexGrid.surroundingViewRadius = 40;
     self.hexGrid.offsetBetweeenViews = 20;
     // Set required parameters
-    self.hexGrid.viewFrame = self.scrollView.frame;
+    self.hexGrid.viewFrame = CGRectMake(0, 0, _scrollView.contentSize.width, _scrollView.contentSize.height);
     self.hexGrid.numberOfViews = kNumberOfViews;
     
     // Produce UIViews
